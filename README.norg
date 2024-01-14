@@ -1,0 +1,43 @@
+* About
+  Personal {https://github.com/qmk/qmk_firmware}[QMK firmware] fork for custom keyboard configs
+
+* Usage
+** Install QMK
+   - See: {https://docs.qmk.fm/#/newbs_getting_started}[qmk setup guide]
+   TLDR:
+   @code bash
+   sudo pacman -S qmk # Or `yay -S qmk`
+   qmk setup
+   @end
+
+** Configure Keymap
+   - Go to {https://config.qmk.fm/#/}[QMK configurator] and configure custom layout
+   - Download `<LAYOUT_NAME>.json`
+   - Create updated `keymap.c` via:
+   @code bash
+   # Check first to see if the output is good
+   qmk json2c /path/to/downloaded/<LAYOUT_NAME>.json
+
+   # Overwrite existing keymap.c
+   qmk json2c /path/to/downloaded/<LAYOUT_NAME>.json > /path/to/qmk_firmware/keyboards/<KEYBOARD>/keymaps/<CUSTOM_KEYMAP>/keymap.c
+   @end
+   > *NOTE*: We're using a custom keymap as mentioned from: {https://docs.qmk.fm/#/newbs_building_firmware?id=create-a-new-keymap}[create-a-new-keymap].
+   >       Reason being is that this allows us to edit the `config.c` file for
+   >       values not exposed by QMK Configurator. Ex. `#define TAPPING_TERM 125`
+   - Compile to make sure things are good
+   @code bash
+   qmk compile -kb <KEYBOARD> -km <CUSTOM_KEYMAP>
+   @end
+
+** Flash and Update
+   - Set keyboard to `RESET MODE` (usually is a physical button to press on the keyboard)
+   - Flash via command:
+   @code bash
+   qmk flash -kb <KEYBOARD> -km <CUSTOM_KEYMAP>
+   @end
+
+* Maintaining Fork
+  - Only make changes on *personal* branch
+  -- Update fork from upstream
+  -- Pull `master` locally
+  -- `rebase` custom branch with `master` branch
